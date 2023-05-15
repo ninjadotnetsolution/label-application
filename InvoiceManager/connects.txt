@@ -1,0 +1,4 @@
+konark
+111
+Label=KCMART;Provider=SQLOLEDB.1;Server=SVE-M\PCAMERICA;uid=sa;pwd=pcAmer1ca;Database=cresql
+Label=KCMART;Provider=SQLOLEDB.1;Server=SVE-M\PCAMERICA;uid=sa;pwd=pcAmer1ca;Database=cresql
