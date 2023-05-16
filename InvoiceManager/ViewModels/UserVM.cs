@@ -262,7 +262,6 @@ namespace InvoiceManager.ViewModels
                 if (await Service.Instance.Connect(label, provider, server, database, dbUserName, dbPassword, connString))
                 {
                     Application.Current.Dispatcher.Invoke((Action)delegate {
-                        // your code
                         Helpers.mainFrame.Navigate(new SearchPage());
                     });
                 }

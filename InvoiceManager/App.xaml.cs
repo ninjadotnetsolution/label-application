@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace InvoiceManager
 {
@@ -23,10 +24,11 @@ namespace InvoiceManager
 
         private void ApplicationStartup(object sender, StartupEventArgs e)
         {
+            
             SplashWindow splash = new SplashWindow();
             splash.Show();
             mainWindow = new MainWindow();
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
             mainWindow.Show();
             splash.Close();
         }

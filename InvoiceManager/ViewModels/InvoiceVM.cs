@@ -26,8 +26,5 @@ namespace InvoiceManager.ViewModels
         {
             
         }
-        
-        
     }
-
 }

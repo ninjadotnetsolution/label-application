@@ -14,6 +14,7 @@ namespace InvoiceManager.Common
     class Helpers
     {
         public static Frame mainFrame = new Frame();
+        
         static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
         {
             // Check arguments.

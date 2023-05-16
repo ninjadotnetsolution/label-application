@@ -22,10 +22,7 @@ namespace InvoiceManager.ViewModels
         }
 
         public SearchVM() {
-            db = new InvoiceDbContext();
 
-            db.Invoices = new List<Invoice>();
-            Invoices = new ObservableCollection<Invoice>(db.Invoices);
             CloseCommand = new RelayCommand(o => closeClick(o));
             ResetCommand = new RelayCommand(o => resetClick(o));
             ProcessCommand = new RelayCommand(o => processClick(o));
@@ -35,7 +32,6 @@ namespace InvoiceManager.ViewModels
 
         }
 
-        public InvoiceDbContext db;
 
         private Visibility isProcessing = Visibility.Hidden;
         public Visibility IsProcessing
@@ -71,7 +67,7 @@ namespace InvoiceManager.ViewModels
         }
 
         
-        private DateTime to = new DateTime(DateTime.Today);
+        private DateTime to = DateTime.Today;
         public DateTime To
         {
             get => to;
@@ -138,10 +134,10 @@ namespace InvoiceManager.ViewModels
 
                 TotalSummary.TotalInvoicecs = filteredInvoices.Count;
                 TotalSummary.TotalGrand = filteredInvoices.Sum(item => item.GrandTotal);
-                TotalSummary.Credit = filteredInvoices.Where(item => item.Type == "CC").Sum(item => item.GrandTotal);
-                TotalSummary.Cash = filteredInvoices.Where(item => item.Type == "CA").Sum(item => item.GrandTotal);
-                TotalSummary.Gift = filteredInvoices.Where(item => item.Type == "GC").Sum(item => item.GrandTotal);
-                TotalSummary.Other = filteredInvoices.Where(item => item.Type == "DC").Sum(item => item.GrandTotal);
+                TotalSummary.Credit = filteredInvoices.Where(item => item.GetInvoiceType() == InvoiceType.Credit).Sum(item => item.GrandTotal);
+                TotalSummary.Cash = filteredInvoices.Where(item => item.GetInvoiceType() == InvoiceType.Cash).Sum(item => item.GrandTotal);
+                TotalSummary.Gift = filteredInvoices.Where(item => item.GetInvoiceType() == InvoiceType.GiftCard).Sum(item => item.GrandTotal);
+                TotalSummary.Other = filteredInvoices.Where(item => item.GetInvoiceType() == InvoiceType.All).Sum(item => item.GrandTotal);
                 OnPropertyChanged("TotalSummary");
                 return filteredInvoices;
             }
@@ -166,10 +162,10 @@ namespace InvoiceManager.ViewModels
 
                 selectedSummary.TotalInvoicecs = filteredInvoices.Where(item => item.Checked).ToList().Count;
                 selectedSummary.TotalGrand = filteredInvoices.Where(item => item.Checked).Sum(item => item.GrandTotal);
-                selectedSummary.Credit = filteredInvoices.Where(item => item.Checked && item.Type == "CC").Sum(item => item.GrandTotal);
-                selectedSummary.Cash = filteredInvoices.Where(item => item.Checked && item.Type == "CA").Sum(item => item.GrandTotal);
-                selectedSummary.Gift = filteredInvoices.Where(item => item.Checked && item.Type == "GC").Sum(item => item.GrandTotal);
-                selectedSummary.Other = filteredInvoices.Where(item => item.Checked && item.Type == "DC").Sum(item => item.GrandTotal);
+                selectedSummary.Credit = filteredInvoices.Where(item => item.Checked && item.GetInvoiceType() == InvoiceType.Credit).Sum(item => item.GrandTotal);
+                selectedSummary.Cash = filteredInvoices.Where(item => item.Checked && item.GetInvoiceType() == InvoiceType.Cash).Sum(item => item.GrandTotal);
+                selectedSummary.Gift = filteredInvoices.Where(item => item.Checked && item.GetInvoiceType() == InvoiceType.GiftCard).Sum(item => item.GrandTotal);
+                selectedSummary.Other = filteredInvoices.Where(item => item.Checked && item.GetInvoiceType() == InvoiceType.All).Sum(item => item.GrandTotal);
                 OnPropertyChanged("selectedSummary");
                 OnPropertyChanged("SelectedInvoices");
             }
@@ -207,17 +203,20 @@ namespace InvoiceManager.ViewModels
             if(selectedItems.Count() > 0)
             {
                 IsProcessing = Visibility.Visible;
-                Cursor.Current = Cursors.WaitCursor;
+                Mouse.OverrideCursor = Cursors.Wait;
                 await Task.Run(async () =>
                 {
                     await Service.Instance.Update(selectedItems.ToList());
 
                     IsProcessing = Visibility.Hidden;
-                    Cursor.Current = Cursors.Default;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                     MessageBox.Show("All Invoices Processed Succesfully");
                     filteredInvoices = new ObservableCollection<Invoice>(await Service.Instance.Search(From, To, SelectedType));
                     OnPropertyChanged("FilteredInvoices");
                 });
+            }else
+            {
+                MessageBox.Show("Please select any item");
             }
         }
     }

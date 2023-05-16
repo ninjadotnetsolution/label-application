@@ -16,7 +16,7 @@
         <viewModel:MainWindowVM/>
     </Window.DataContext>
     
-    <StackPanel Height="300" Orientation="Horizontal" Width="400">
-        <TextBlock Text="Windows Loading..." FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    </StackPanel>
+    <Border Height="300" Width="400">
+        <TextBlock Text="Labels App Loading..." FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red"/>
+    </Border>
 </Window>

@@ -9,9 +9,7 @@ namespace InvoiceManager.Models
     public class Connect
     {
         public Connect()
-        {
-            
-        }
+        { }
 
         public Connect(int id, string connString)
         {
@@ -26,8 +24,6 @@ namespace InvoiceManager.Models
                 DBPassword = items[4].Split('=')[1];
                 Database = items[5].Split('=')[1];
             }
-
-
         }
 
         public int Id { get; set; }

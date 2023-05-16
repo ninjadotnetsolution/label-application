@@ -15,20 +15,29 @@ namespace InvoiceManager.Models
         public int LineCount { get; set; }
         public float ModeTotal { get; set; }
         public float GrandTotal { get; set; }
-        public bool Checked { get; set; }
+        public bool Checked { get; set; } = false;
 
-        public Invoice(long id, InvoiceType type)
+        public InvoiceType GetInvoiceType()
         {
-            this.Type = type.ToString();
-            this.StoreID = id;
-            this.ModeTotal = 0.5f;
-            this.GrandTotal = 0.6f;
+            switch (this.Type)
+            {
+                case "CA":
+                    return InvoiceType.Cash;
+                case "GC":
+                    return InvoiceType.GiftCard;
+                case "CH":
+                    return InvoiceType.Check;
+                case "DC":
+                    return InvoiceType.DebitCard;
+                case "CC":
+                    return InvoiceType.Credit;
+                default:
+                    return Models.InvoiceType.All;
+            }
         }
 
         public Invoice()
-        {
-            this.Checked = false;
-        }
+        { }
 
     }
 

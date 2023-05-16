@@ -9,11 +9,7 @@ namespace InvoiceManager.Models
     public class User
     {
         public User()
-        {
-            Id = 0;
-            Name = "";
-            Password = "";
-        }
+        { }
         public long Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
