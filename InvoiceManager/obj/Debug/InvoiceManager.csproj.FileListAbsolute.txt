@@ -28,4 +28,3 @@ C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\obj\Debug\Diction
 C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\bin\Debug\Dapper.dll
 C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\bin\Debug\Dapper.xml
 C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\obj\Debug\InvoiceManager.csproj.CopyComplete
-C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\bin\Debug\Resources\credential.txt

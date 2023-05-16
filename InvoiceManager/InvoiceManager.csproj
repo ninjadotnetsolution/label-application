@@ -145,9 +145,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\credential.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\credential.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\add.png" />

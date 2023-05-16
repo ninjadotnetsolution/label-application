@@ -20,6 +20,7 @@ namespace InvoiceManager.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
         public SearchVM() {
             db = new InvoiceDbContext();
 
@@ -70,7 +71,7 @@ namespace InvoiceManager.ViewModels
         }
 
         
-        private DateTime to = new DateTime(2024, 1, 1);
+        private DateTime to = new DateTime(DateTime.Today);
         public DateTime To
         {
             get => to;
@@ -176,10 +177,13 @@ namespace InvoiceManager.ViewModels
 
 
         public ICommand SearchCommand { get; set; }
-        private void searchClick(object sender)
+        private async void searchClick(object sender)
         {
-            filteredInvoices = new ObservableCollection<Invoice>(Service.Instance.Search(From, To, SelectedType));
-            OnPropertyChanged("FilteredInvoices");
+            await Task.Run(async () =>
+            {
+                filteredInvoices = new ObservableCollection<Invoice>(await Service.Instance.Search(From, To, SelectedType));
+                OnPropertyChanged("FilteredInvoices");
+            });
         }
 
         public ICommand CloseCommand { get; set; }
@@ -197,18 +201,23 @@ namespace InvoiceManager.ViewModels
         }
 
         public ICommand ProcessCommand { get; set; }
-        private void processClick(object sender)
+        private async void processClick(object sender)
         {
             var selectedItems = FilteredInvoices.Select(item => item.Number);
             if(selectedItems.Count() > 0)
             {
                 IsProcessing = Visibility.Visible;
-                Service.Instance.Update(selectedItems.ToList());
+                Cursor.Current = Cursors.WaitCursor;
+                await Task.Run(async () =>
+                {
+                    await Service.Instance.Update(selectedItems.ToList());
 
-                IsProcessing = Visibility.Hidden;
-                MessageBox.Show("All Invoices Processed Succesfully");
-                filteredInvoices = new ObservableCollection<Invoice>(Service.Instance.Search(From, To, SelectedType));
-                OnPropertyChanged("FilteredInvoices");
+                    IsProcessing = Visibility.Hidden;
+                    Cursor.Current = Cursors.Default;
+                    MessageBox.Show("All Invoices Processed Succesfully");
+                    filteredInvoices = new ObservableCollection<Invoice>(await Service.Instance.Search(From, To, SelectedType));
+                    OnPropertyChanged("FilteredInvoices");
+                });
             }
         }
     }

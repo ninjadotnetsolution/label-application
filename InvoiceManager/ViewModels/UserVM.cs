@@ -35,7 +35,10 @@ namespace InvoiceManager.ViewModels
                 List<string> _connects = File.ReadAllLines(path).ToList();
                 for(int i = 2; i < _connects.Count; i++)
                 {
-                    connects.Add(new Connect(i, _connects[i]));
+                    if (_connects[i].Length > 0)
+                    {
+                        connects.Add(new Connect(i, _connects[i]));
+                    }
 
                 }
             }
@@ -80,6 +83,28 @@ namespace InvoiceManager.ViewModels
             }
         }
 
+        private Visibility isProcessing = Visibility.Hidden;
+        public Visibility IsProcessing
+        {
+            get => isProcessing;
+            set
+            {
+                isProcessing = value;
+                this.OnPropertyChanged("IsProcessing");
+            }
+        }
+
+        private bool connectable = false;
+        public bool Connectable
+        {
+            get => connectable;
+            set
+            {
+                connectable = value;
+                this.OnPropertyChanged("Connectable");
+            }
+        }
+
         private string connString { get; set; } = "";
         public string ConnString
         {
@@ -91,7 +116,7 @@ namespace InvoiceManager.ViewModels
             }
         }
 
-        private string userName { get; set; } = "user";
+        private string userName { get; set; } = "konark";
         public string UserName
         {
             get => userName;
@@ -102,7 +127,7 @@ namespace InvoiceManager.ViewModels
             }
         }
 
-        private string password { get; set; } = "111";
+        private string password { get; set; } = "Biryan!123";
         public string Password
         {
             get => password;
@@ -202,8 +227,9 @@ namespace InvoiceManager.ViewModels
         }
 
         public ICommand ConnectCommand { get; set; }
-        private void connectClick(object sender)
+        private async void connectClick(object sender)
         {
+            IsProcessing = Visibility.Visible;
             var path = Path.Combine(Directory.GetCurrentDirectory(), "connects.txt");
             string _user = "";
             string _password = "";
@@ -212,7 +238,7 @@ namespace InvoiceManager.ViewModels
                 List<string> words = File.ReadAllLines(path).ToList();
                 _user = words[0];
                 _password = words[1];
-            }else
+            } else
             {
                 var asmbly = Assembly.GetExecutingAssembly();
                 var filePath = "InvoiceManager.Resources.credential.txt";
@@ -224,17 +250,24 @@ namespace InvoiceManager.ViewModels
                     _password = credential.Split(' ')[1];
                 }
             }
-
             if (_user != userName || _password != password)
             {
+                IsProcessing = Visibility.Hidden;
+                MessageBox.Show("Wrong password");
                 return;
             }
 
-
-            if (Service.Instance.Connect(label, provider, server, database, dbUserName, dbPassword, connString))
+            await Task.Run(async () =>
             {
-                Helpers.mainFrame.Navigate(new SearchPage());
-            }
+                if (await Service.Instance.Connect(label, provider, server, database, dbUserName, dbPassword, connString))
+                {
+                    Application.Current.Dispatcher.Invoke((Action)delegate {
+                        // your code
+                        Helpers.mainFrame.Navigate(new SearchPage());
+                    });
+                }
+                IsProcessing = Visibility.Hidden;
+            });
 
         }
 
@@ -291,13 +324,19 @@ namespace InvoiceManager.ViewModels
         }
 
         public ICommand TestCommand { get; set; }
-        private void testClick(object sender)
+        private async void testClick(object sender)
         {
-            if (Service.Instance.Connect(Label, provider, server, database, dbUserName, dbPassword, connString))
+            IsProcessing = Visibility.Visible;
+            await Task.Run(async () =>
             {
-                MessageBox.Show("Success");
-
-            }
+                bool result = await Service.Instance.Connect(Label, provider, server, database, dbUserName, dbPassword, connString);
+                    
+                if (result)
+                {
+                    MessageBox.Show("Success");
+                }
+                IsProcessing = Visibility.Hidden;
+            });
 
         }
 

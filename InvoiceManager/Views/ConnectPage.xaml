@@ -53,172 +53,177 @@
         </ControlTemplate>
     </Page.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <StackPanel >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Width="300" Background="#3f4f4f4f" Margin="0 30 0 0" Padding="10" x:Name="allUsersBorder">
+            <Border Grid.Column="0" Width="300" Background="#3f4f4f4f" Margin="0 30 0 0" Padding="10" x:Name="allUsersBorder">
 
-            <Grid HorizontalAlignment="Left">
+                <Grid HorizontalAlignment="Left">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Border BorderThickness="0 0 0 3" BorderBrush="Black">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Text="My Connections" Width="150" FontSize="20"/>
-                    </StackPanel>
-                </Border>
-
-                <ListView Grid.Row="1" VerticalAlignment="Top" SelectedItem="{Binding SelectedConnect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"  ItemsSource="{Binding Connects, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" Height="450" x:Name="invoiceListView">
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                                <TextBlock  Text="{Binding Label}" Width="250" FontSize="18"/>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-
-                </ListView>
-
-            </Grid>
-
-        </Border>
-
-        <Grid Grid.Column="1" HorizontalAlignment="Center" Width="800">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid>
-                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="130"/>
-                        <RowDefinition Height="10"/>
-                    </Grid.RowDefinitions>
-                    <Grid>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="110"/>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="110"/>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="User Name:" FontSize="20" VerticalAlignment="Bottom"/>
-                        <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="20" VerticalAlignment="Bottom"/>
-                        <TextBlock Grid.Column="2" Text="Password:" FontSize="20" VerticalAlignment="Bottom" Margin="20 0 0 0"/>
-                        <PasswordBox Grid.Column="3" Style="{StaticResource PasswordBox}" FontSize="20" PasswordChar="*" Name="txtPassword" PasswordChanged="onChangePass"  VerticalAlignment="Bottom"/>
-                        <Button Grid.Column="4" Width="120" Height="40" Template="{StaticResource btnConnect}" Command="{Binding ConnectCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"></Button>
-                        <!--<Button Grid.Column="5" Width="160" Height="40" Template="{StaticResource btnChangepass}" Command="{Binding ConnectCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"></Button>-->
-                    </Grid>
-                    <Grid Grid.Row="1" Visibility="Hidden">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="New Password:" FontSize="20" VerticalAlignment="Top" Margin="0,43,0,0"/>
-                        <PasswordBox Grid.Column="1" Style="{StaticResource PasswordBox}" FontSize="20" PasswordChar="*" Name="newPassword" PasswordChanged="onChangeNewPass"  VerticalAlignment="Bottom" />
-                        <TextBlock Grid.Column="2" Text="Confirm Password:" FontSize="20" VerticalAlignment="Bottom" Margin="20 0 0 0"/>
-                        <PasswordBox Grid.Column="3" Style="{StaticResource PasswordBox}" FontSize="20" PasswordChar="*" Name="cfmPassword" PasswordChanged="onChangeCfmPass"  VerticalAlignment="Bottom" />
-                        <Button Grid.Column="5" Width="160" Height="40" Template="{StaticResource btnResetpass}" Command="{Binding ResetPasswordCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0"></Button>
-                    </Grid>
-
-                </Grid>
-            </Grid>
-
-            <Border  Grid.Row="1" BorderBrush="Black" BorderThickness="2" Margin="0 10 0 0" Padding="15 0 15 0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="70"/>
-                        <RowDefinition Height="80"/>
-                        <RowDefinition Height="80"/>
-                        <RowDefinition Height="80"/>
-                        <RowDefinition Height="80"/>
-                        <RowDefinition Height="80"/>
-                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Text="My Connections" Width="150" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
 
-                        <TextBlock Grid.Column="0" Text="Label:" FontSize="20" VerticalAlignment="Bottom"/>
-                        <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" FontSize="20" VerticalAlignment="Bottom"/>
-                    </Grid>
+                    <ListView Grid.Row="1" VerticalAlignment="Top" SelectedItem="{Binding SelectedConnect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"  ItemsSource="{Binding Connects, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" Height="450" x:Name="invoiceListView" SelectionChanged="onItemSelect">
 
-                   <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="Black" BorderThickness="0 0 0 1">
+                                    <TextBlock  Text="{Binding Label}" Width="250" FontSize="18"/>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
 
-                        <TextBlock Grid.Column="0" Text="Server:" FontSize="20" VerticalAlignment="Bottom"/>
-                        <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" FontSize="20" VerticalAlignment="Bottom"/>
-                    </Grid>
+                    </ListView>
 
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Database:" FontSize="20" VerticalAlignment="Bottom"/>
-                        <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" FontSize="20" VerticalAlignment="Bottom"/>
-                    </Grid>
-
-                    <Grid Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="User Name:" FontSize="20" VerticalAlignment="Bottom"/>
-                        <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding DBUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" FontSize="20" VerticalAlignment="Bottom"/>
-                    </Grid>
-                    <Grid Grid.Row="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Password:" FontSize="20" VerticalAlignment="Bottom"/>
-                        <PasswordBox Grid.Column="1" Style="{StaticResource PasswordBox}" Name="dbPassword" PasswordChanged="onChangeDBPass"  PasswordChar="*" FontSize="20" VerticalAlignment="Bottom"/>
-                    </Grid>
-
-                    <Grid Grid.Row="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="450"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--<TextBlock Grid.Column="0" Text="Connection String:" FontSize="20" VerticalAlignment="Bottom"/>-->
-                        <!--<TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding ConnString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="20" VerticalAlignment="Bottom"/>-->
-                        <Button  Width="160" Height="50" Template="{StaticResource btnTest}" Command="{Binding TestCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"></Button>
-                    </Grid>
                 </Grid>
 
             </Border>
 
+            <Grid Grid.Column="1" HorizontalAlignment="Center" Width="800">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="130"/>
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="App User Name:" FontSize="20" VerticalAlignment="Bottom"/>
+                            <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="20" VerticalAlignment="Bottom"/>
+                            <TextBlock Grid.Column="2" Text="App Password:" FontSize="20" VerticalAlignment="Bottom" Margin="20 0 0 0"/>
+                            <PasswordBox Grid.Column="3" Style="{StaticResource PasswordBox}" FontSize="20" PasswordChar="*" Name="txtPassword" PasswordChanged="onChangePass"  VerticalAlignment="Bottom"/>
+                            <!--<Button Grid.Column="5" Width="160" Height="40" Template="{StaticResource btnChangepass}" Command="{Binding ConnectCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"></Button>-->
+                        </Grid>
+                        <Grid Grid.Row="1" Visibility="Hidden">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="New Password:" FontSize="20" VerticalAlignment="Top" Margin="0,43,0,0"/>
+                            <PasswordBox Grid.Column="1" Style="{StaticResource PasswordBox}" FontSize="20" PasswordChar="*" Name="newPassword" PasswordChanged="onChangeNewPass"  VerticalAlignment="Bottom" />
+                            <TextBlock Grid.Column="2" Text="Confirm Password:" FontSize="20" VerticalAlignment="Bottom" Margin="20 0 0 0"/>
+                            <PasswordBox Grid.Column="3" Style="{StaticResource PasswordBox}" FontSize="20" PasswordChar="*" Name="cfmPassword" PasswordChanged="onChangeCfmPass"  VerticalAlignment="Bottom" />
+                            <Button Grid.Column="5" Width="160" Height="40" Template="{StaticResource btnResetpass}" Command="{Binding ResetPasswordCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0"></Button>
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+
+                <Border  Grid.Row="1" BorderBrush="Black" BorderThickness="2" Margin="0 10 0 0" Padding="15 0 15 0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="70"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="300"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Label:" FontSize="20" VerticalAlignment="Bottom"/>
+                            <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" FontSize="20" VerticalAlignment="Bottom"/>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="300"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Server:" FontSize="20" VerticalAlignment="Bottom"/>
+                            <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" FontSize="20" VerticalAlignment="Bottom"/>
+                        </Grid>
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="300"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Database:" FontSize="20" VerticalAlignment="Bottom"/>
+                            <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" FontSize="20" VerticalAlignment="Bottom"/>
+                        </Grid>
+
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="300"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="User Name:" FontSize="20" VerticalAlignment="Bottom"/>
+                            <TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding DBUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" FontSize="20" VerticalAlignment="Bottom"/>
+                        </Grid>
+                        <Grid Grid.Row="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="300"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Password:" FontSize="20" VerticalAlignment="Bottom"/>
+                            <PasswordBox Grid.Column="1" Style="{StaticResource PasswordBox}" Name="dbPassword" PasswordChanged="onChangeDBPass"  PasswordChar="*" FontSize="20" VerticalAlignment="Bottom"/>
+                        </Grid>
+
+                        <Grid Grid.Row="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="450"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--<TextBlock Grid.Column="0" Text="Connection String:" FontSize="20" VerticalAlignment="Bottom"/>-->
+                            <!--<TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding ConnString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="20" VerticalAlignment="Bottom"/>-->
+                            <Button Grid.Column="0" Width="160" Height="40" Template="{StaticResource btnTest}" Command="{Binding TestCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" ></Button>
+                            <Button Grid.Column="1" Width="120" Height="40" Template="{StaticResource btnConnect}" Command="{Binding ConnectCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"></Button>
+                        </Grid>
+                    </Grid>
+
+                </Border>
+
+
+            </Grid>
+
 
         </Grid>
 
-
-    </Grid>
-
+        <DockPanel Visibility="{Binding IsProcessing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="700" Height="200" Margin="0 -900 0 0" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Connecting. Please Wait...." FontSize="50" Foreground="Black" VerticalAlignment="Center"/>
+        </DockPanel>
+    </StackPanel>
 </Page>

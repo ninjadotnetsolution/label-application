@@ -1,4 +1,3 @@
-C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\bin\Release\Resources\credential.txt
 C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\bin\Release\InvoiceManager.exe.config
 C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\bin\Release\InvoiceManager.exe
 C:\Users\ITMaster\Documents\Work\InvoiceManager\InvoiceManager\bin\Release\InvoiceManager.pdb

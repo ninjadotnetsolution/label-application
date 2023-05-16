@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using InvoiceManager.Models;
 using InvoiceManager.ViewModels;
 
 namespace InvoiceManager.Views
@@ -49,6 +51,15 @@ namespace InvoiceManager.Views
         {
             if (this.DataContext != null)
             { ((dynamic)this.DataContext).DBPassword = dbPassword.Password; }
+        }
+
+        private void onItemSelect(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                Connect connect = ((dynamic)this.DataContext).SelectedConnect;
+                dbPassword.Password = connect.DBPassword;
+            }
         }
     }
 }

@@ -22,21 +22,19 @@ namespace InvoiceManager.Common
 
         public OleDbConnection connection;
         public bool isLoading = false;
-        public bool Connect(string _label, string _provider, string _server, string _database, string _userName, string _password, string _connString)
+        public async Task<bool> Connect(string _label, string _provider, string _server, string _database, string _userName, string _password, string _connString)
         {
             if (_connString != null && _connString.Length > 0 && _connString.Split(';').Length > 4)
             {
-                return Connect(_label, _connString);
+                return await Connect(_label, _connString);
             }
             
             string connString = $"Provider={_provider};Server={_server};uid={_userName};pwd={_password};Database={_database}";
             connection = new OleDbConnection(connString);
-
-            //using (Service.Instance.connection = new OleDbConnection(connString))
             {
                 try
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "connects.txt");
                     File.OpenWrite(path).Close();
@@ -56,35 +54,16 @@ namespace InvoiceManager.Common
                     MessageBox.Show(ex.Message);
                     return false; ;
                 }
-                // The connection is automatically closed when the
-                // code exits the using block.
             }
-
-
-
-            //SqlConnection conn = new SqlConnection(connString);
-            //try
-            //{
-            //    conn.Open();
-            //    MessageBox.Show("Passed");
-            //    return true;
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show(e.Message);
-            //    return false;
-            //}
-
         }
 
-        public bool Connect(string _label, string _connString)
+        public async Task<bool> Connect(string _label, string _connString)
         {
             connection = new OleDbConnection(_connString);
-            //using (Service.Instance.connection = new OleDbConnection(_connString))
             {
                 try
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "connects.txt");
                     File.OpenWrite(path).Close();
@@ -104,31 +83,10 @@ namespace InvoiceManager.Common
                     MessageBox.Show(ex.Message);
                     return false; ;
                 }
-                // The connection is automatically closed when the
-                // code exits the using block.
             }
-
-
-
-
-            //SqlConnection conn = new SqlConnection(_connString);
-
-            //try
-            //{
-            //    conn.Open();
-            //    MessageBox.Show("Passed");
-
-            //    return true;
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show("Failure");
-            //    return false;
-            //}
-
         }
 
-        public List<Invoice> Search(DateTime from, DateTime to, InvoiceType selectedType)
+        public async Task<List<Invoice>> Search(DateTime from, DateTime to, InvoiceType selectedType)
         {
             
             List<Invoice> result = new List<Invoice>();
@@ -156,21 +114,21 @@ namespace InvoiceManager.Common
                     break;
             }
 
-            //using (Service.Instance.connection = new OleDbConnection(connString))
             {
 
                 string queryString = "";
                 if (type == null)
                 {
-                    queryString = $"SELECT MAX(dbo.Invoices.Store_ID) as StoreID, dbo.Invoices.Invoice_Number as Number, MAX(dbo.Invoices.DateTime) as DateTime, MAX(dbo.Invoices.Payment_Method) as Type, SUM(dbo.Invoice_Itemized.LineNum) as LineCount, MAX(dbo.Invoices.Grand_Total) as GrandTotal, CAST(ROUND((SUM(dbo.Invoice_Itemized.PricePer)+SUM(dbo.Invoice_Itemized.Tax1Per)+SUM(dbo.Invoice_Itemized.Tax2Per)),2) as numeric(36,2)) as ModeTotal\r\nFROM dbo.Invoices\r\nLEFT JOIN dbo.Invoice_Itemized ON dbo.Invoices.Invoice_Number = dbo.Invoice_Itemized.Invoice_Number\r\nWHERE DateTime > '{from}' AND DateTime < '{to}' \r\nGROUP BY dbo.Invoices.Invoice_Number\r\n";
+                    queryString = $"SELECT MAX(IT.Store_ID) as Id, IT.Invoice_Number as InvoiceNumber, IT.DateTime as DateTime, IT.Payment_Method as PaymentMethod, II1.LineCount as LineCount, CAST(ROUND((II.PricePer+II.Tax1Per+II.Tax2Per),2) as numeric(36,2)) as ModeTotal, IT.Grand_Total as TotalGrand FROM [dbo].[Invoice_Totals] IT INNER JOIN [dbo].[Invoice_Itemized] II ON IT.Invoice_Number = II.Invoice_Number INNER JOIN (Select IIS.Invoice_Number, Count(IIS.LineNum) as LineCount FROM [dbo].[Invoice_Itemized] IIS  GROUP BY IIS.Invoice_Number) II1 ON IT.Invoice_Number = II1.Invoice_Number WHERE IT.DateTime > '{from}' AND IT.DateTime < '{to}'";
                 }
                 else
                 {
-                    queryString = $"SELECT MAX(dbo.Invoices.Store_ID) as StoreID, dbo.Invoices.Invoice_Number as Number, MAX(dbo.Invoices.DateTime) as DateTime, MAX(dbo.Invoices.Payment_Method) as Type, SUM(dbo.Invoice_Itemized.LineNum) as LineCount, MAX(dbo.Invoices.Grand_Total) as GrandTotal, CAST(ROUND((SUM(dbo.Invoice_Itemized.PricePer)+SUM(dbo.Invoice_Itemized.Tax1Per)+SUM(dbo.Invoice_Itemized.Tax2Per)),2) as numeric(36,2)) as ModeTotal\r\nFROM dbo.Invoices\r\nLEFT JOIN dbo.Invoice_Itemized ON dbo.Invoices.Invoice_Number = dbo.Invoice_Itemized.Invoice_Number\r\nWHERE DateTime > '{from}' AND DateTime < '{to}' AND Payment_Method = '{type}'\r\nGROUP BY dbo.Invoices.Invoice_Number\r\n";
+                    queryString = $"SELECT MAX(IT.Store_ID) as Id, IT.Invoice_Number as InvoiceNumber, IT.DateTime as DateTime, IT.Payment_Method as PaymentMethod, II1.LineCount as LineCount, CAST(ROUND((II.PricePer+II.Tax1Per+II.Tax2Per),2) as numeric(36,2)) as ModeTotal, IT.Grand_Total as TotalGrand FROM [dbo].[Invoice_Totals] IT INNER JOIN [dbo].[Invoice_Itemized] II ON IT.Invoice_Number = II.Invoice_Number INNER JOIN (Select IIS.Invoice_Number, Count(IIS.LineNum) as LineCount FROM [dbo].[Invoice_Itemized] IIS  GROUP BY IIS.Invoice_Number) II1 ON IT.Invoice_Number = II1.Invoice_Number WHERE IT.DateTime > '{from}' AND IT.DateTime < '{to}' AND IT.Payment_Method = '{type}'";
                 }
 
-                connection.Open();
-                result = connection.Query<Invoice>(queryString).ToList();
+                await connection.OpenAsync();
+                var res = await connection.QueryAsync<Invoice>(queryString);
+                result = res.ToList();
                 connection.Close();
             }
 
@@ -178,24 +136,22 @@ namespace InvoiceManager.Common
         }
 
 
-        public List<Invoice> Update(List<int> numbers)
+        public async Task<List<Invoice>> Update(List<int> numbers)
         {
-            string connString = $"Provider=SQLOLEDB.1;Server=192.168.125.25;uid=testuser;pwd=!Aa12345;Database=KCIMART";
-
             List<Invoice> result = new List<Invoice>();
 
-            //using (Service.Instance.connection = new OleDbConnection(connString))
             {
                 isLoading = true;
-                string strNumbers = string.Join(",", numbers);
-                connection.Open();
+                await connection.OpenAsync(); ;
                 for(int i = 0; i < numbers.Count; i++)
                 {
                     string firstQuery = $"Update dbo.Invoice_Itemized SET IsAnalyzed = 1 Where Invoice_Number = {numbers[i]}";
                     string secondQuery = $"Update dbo.Labels_Activity SET IsAnalyzed = 1 Where TransactionNumber = {numbers[i]}";
-                    CommandDefinition command = new CommandDefinition(firstQuery, connString);
                     int resCode = connection.Execute(firstQuery);
-                    resCode = connection.Execute(secondQuery);
+                    if (resCode == 1)
+                    {
+                        connection.Execute(secondQuery);
+                    }
 
                 }
                 isLoading = false;
@@ -208,9 +164,7 @@ namespace InvoiceManager.Common
 
 
         private Service() 
-        { 
-
-        }
+        { }
         ~ Service()
         {
             if (connection != null)
