@@ -1,4 +1,4 @@
-﻿using InvoiceManager.Models;
+﻿using LabelManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace InvoiceManager.Converters
+namespace LabelManager.Converters
 {
     public class PaymentTypeConverter : IValueConverter
     {

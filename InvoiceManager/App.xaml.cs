@@ -1,4 +1,4 @@
-﻿using InvoiceManager.Views;
+﻿using LabelManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace InvoiceManager
+namespace LabelManager
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -28,7 +28,7 @@ namespace InvoiceManager
             SplashWindow splash = new SplashWindow();
             splash.Show();
             mainWindow = new MainWindow();
-            Thread.Sleep(3000);
+            Thread.Sleep(1500);
             mainWindow.Show();
             splash.Close();
         }

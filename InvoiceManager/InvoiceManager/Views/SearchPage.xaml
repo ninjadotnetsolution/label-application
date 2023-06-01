@@ -1,0 +1,371 @@
+﻿<Page x:Class="InvoiceManager.Views.SearchPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:converters="clr-namespace:InvoiceManager.Converters"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1500"
+      Title="SearchPage">
+    
+    <Page.Resources>
+
+        <converters:DateConverter x:Key="DateConverter" />
+        <converters:TimeConverter x:Key="TimeConverter" />
+        <converters:PaymentTypeConverter x:Key="PaymentConverter" />
+
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Background"
+          Value="Transparent" />
+        </Style>
+            
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="SaveButton">
+            <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Resources/save as.png"/>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="newButton">
+            <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Resources/user_add.png"/>
+        </ControlTemplate>
+
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="DeleteButton">
+            <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Resources/deleteUser.png"/>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="PrinterButton">
+            <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Resources/printer.png"/>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="btnAllPrinter">
+            <Border CornerRadius="2" BorderThickness="2" BorderBrush="Red">
+                <TextBlock Text="All User Print" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="Black"/>
+            </Border>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="btnProcess">
+            <Border CornerRadius="2" BorderThickness="2" BorderBrush="Red">
+                <TextBlock Text="Process Invoices" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="Black"/>
+            </Border>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="btnExit">
+            <Border CornerRadius="2" BorderThickness="2" BorderBrush="Red">
+                <TextBlock Text="Exit" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="Black"/>
+            </Border>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="btnSearch">
+            <Border CornerRadius="2" BorderThickness="2" BorderBrush="Red">
+                <TextBlock Text="Search" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="Black"/>
+            </Border>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="btnReset">
+            <Border CornerRadius="2" BorderThickness="2" BorderBrush="Red">
+                <TextBlock Text="Reset" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="Black"/>
+            </Border>
+        </ControlTemplate>
+    </Page.Resources>
+
+    <StackPanel >
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="180"/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+
+
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="1000">
+                <TextBlock Text="Invoice Search Options" FontSize="20"/>
+
+                <Border BorderBrush="Black" BorderThickness="0 1 0 0">
+
+                    <Grid HorizontalAlignment="Center" Width="1000">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="From:" FontSize="15" VerticalAlignment="Bottom"/>
+                        <!--<TextBox Grid.Column="1" Style="{StaticResource GeneralInput}" Text="{Binding From, Converter={StaticResource DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalAlignment="Bottom"/>-->
+                        <DatePicker Grid.Column="1" SelectedDate="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Column="2" Text="To:" FontSize="15" VerticalAlignment="Bottom" Margin="20 0 0 0"/>
+                        <DatePicker Grid.Column="3" SelectedDate="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Column="4" Text="Payment Type:" FontSize="15" VerticalAlignment="Bottom" Margin="20 0 0 0"/>
+                        <ComboBox Grid.Column="5" ItemsSource="{Binding InvoiceTypes}" SelectedItem="{Binding SelectedType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Height="30" FontSize="15" VerticalAlignment="Bottom" Background="Transparent">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding }" Margin="1" Background="Transparent"/>
+                                </DataTemplate>
+
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Button Grid.Column="6" Margin="0 3 0 0" Width="80" Height="30" Template="{StaticResource btnReset}" Command="{Binding ResetCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"></Button>
+                        <Button Grid.Column="7" Margin="0 3 0 0" Width="80" Height="30" Template="{StaticResource btnSearch}" Command="{Binding SearchCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"></Button>
+
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" Width="1000">
+                <TextBlock Text="Invoice Details" FontSize="20"/>
+
+                <Border Background="#1f4f4f4f"  x:Name="allUsersBorder" CornerRadius="2">
+
+                    <Grid HorizontalAlignment="Center">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border BorderThickness="0 0 0 2" BorderBrush="#4f4f4f">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock  Text="Select" Width="50" FontSize="15"/>
+                                <!--<TextBlock  Text="Store ID" Width="50" FontSize="15"/>-->
+                                <TextBlock  Text="Number" Width="100" FontSize="15"/>
+                                <TextBlock  Text="Date" Width="200" FontSize="15"/>
+                                <TextBlock  Text="Time" Width="200" FontSize="15"/>
+                                <TextBlock  Text="Type" Width="100" FontSize="15" />
+                                <TextBlock  Text="Count" Width="100" FontSize="15" />
+                                <TextBlock  Text="Mode Total" Width="100"  FontSize="15"/>
+                                <TextBlock  Text="Grand Total" Width="100"  FontSize="15"/>
+                            </StackPanel>
+                        </Border>
+
+                        <ListView Grid.Row="1" SelectionMode="Multiple"  SelectionChanged="onSelectInvoices" ItemsSource="{Binding FilteredInvoices, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" Height="400" x:Name="invoiceListView">
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#4f4f4f" BorderThickness="0 0 0 1">
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox  IsChecked="{Binding Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="50"/>
+                                            <!--<TextBlock  Text="{Binding StoreID}" Width="50" FontSize="15"/>-->
+                                            <TextBlock  Text="{Binding Number}" Width="100" FontSize="15"/>
+                                            <TextBlock  Text="{Binding DateTime, Converter={StaticResource DateConverter}}" Width="200"  FontSize="15"/>
+                                            <TextBlock  Text="{Binding DateTime, Converter={StaticResource TimeConverter}}" Width="200"  FontSize="15"/>
+                                            <TextBlock  Text="{Binding Type, Converter={StaticResource PaymentConverter}}" Width="100"  FontSize="15"/>
+                                            <TextBlock  Text="{Binding LineCount}" Width="100"  FontSize="15"/>
+                                            <TextBlock  Text="{Binding ModeTotal}" Width="100"  FontSize="15"/>
+                                            <TextBlock  Text="{Binding GrandTotal}" Width="100"  FontSize="15"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+
+                            </ListView.ItemTemplate>
+
+
+                        </ListView>
+
+                    </Grid>
+
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" Width="1000">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500"/>
+                        <ColumnDefinition Width="500"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Invoices Summary" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2" Padding="10 0 0 0" Margin="0 0 10 0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="180"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <TextBlock Text="Total Invoices" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock Text="{Binding TotalSummary.TotalInvoicecs}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="180"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <TextBlock Text="Grand Total" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock Text="{Binding TotalSummary.TotalGrand}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <TextBlock Text="Credit %:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock  Text="{Binding TotalSummary.Credit}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="2" >
+                                        <TextBlock Text="Cash %:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="3">
+                                        <TextBlock  Text="{Binding TotalSummary.Cash}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Row="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <TextBlock Text="Gift %:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock  Text="{Binding TotalSummary.Gift}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="2" >
+                                        <TextBlock Text="Other %:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="3">
+                                        <TextBlock  Text="{Binding TotalSummary.Other}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+
+                        </Border>
+
+
+                    </Grid>
+
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Selected Invoices Summary" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2" Padding="10 0 0 0"  Margin="0 0 10 0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="180"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <TextBlock Text="Total Invoices:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock  Text="{Binding SelectedSummary.TotalInvoicecs}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="180"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <TextBlock Text="Grand Total:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock Text="{Binding SelectedSummary.TotalGrand}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <TextBlock Text="Credit %:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock Text="{Binding SelectedSummary.Credit}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="2" >
+                                        <TextBlock Text="Cash %:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="3">
+                                        <TextBlock Text="{Binding SelectedSummary.Cash}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Row="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <TextBlock Text="Gift %:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock Text="{Binding SelectedSummary.Gift}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="2" >
+                                        <TextBlock Text="Other %:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="3">
+                                        <TextBlock Text="{Binding SelectedSummary.Other}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+
+                            </Grid>
+
+                        </Border>
+
+                    </Grid>
+
+                </Grid>
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Width="140" Height="40" Template="{StaticResource btnProcess}" Command="{Binding ProcessCommand}" Margin="10" HorizontalAlignment="Center"></Button>
+                <Button Width="60" Height="40" Template="{StaticResource btnExit}" Command="{Binding CloseCommand}" Margin="10" HorizontalAlignment="Center"></Button>
+            </StackPanel>
+
+
+
+        </Grid>
+        <DockPanel Visibility="{Binding IsProcessing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Width="800" Height="200" Margin="0 -900 0 0" Background="Transparent" VerticalAlignment="Center">
+            <TextBlock Text="Invoices Processing. Please Wait...." FontSize="50" Foreground="Black" VerticalAlignment="Center"/>
+        </DockPanel>
+
+    </StackPanel>
+</Page>

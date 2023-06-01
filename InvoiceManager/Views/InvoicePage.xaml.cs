@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace InvoiceManager.Views
+namespace LabelManager.Views
 {
     /// <summary>
     /// Interaction logic for InvoicePage.xaml

@@ -1,7 +1,7 @@
-﻿<Application x:Class="InvoiceManager.App"
+﻿<Application x:Class="LabelManager.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:InvoiceManager"
+             xmlns:local="clr-namespace:LabelManager"
              Startup="ApplicationStartup">
     <Application.Resources>
         <Style x:Key="GeneralInput" TargetType="{x:Type TextBox}">

@@ -13,10 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using InvoiceManager.Models;
-using InvoiceManager.ViewModels;
+using LabelManager.Models;
+using LabelManager.ViewModels;
 
-namespace InvoiceManager.Views
+namespace LabelManager.Views
 {
     /// <summary>
     /// Interaction logic for SearchPage.xaml
@@ -63,6 +63,11 @@ namespace InvoiceManager.Views
                 ((dynamic)this.DataContext).SelectedInvoices = selectedItems;
                 ((dynamic)this.DataContext).FilteredInvoices = items;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

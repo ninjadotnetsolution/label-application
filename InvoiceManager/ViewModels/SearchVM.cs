@@ -1,5 +1,5 @@
-﻿using InvoiceManager.Common;
-using InvoiceManager.Models;
+﻿using LabelManager.Common;
+using LabelManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace InvoiceManager.ViewModels
+namespace LabelManager.ViewModels
 {
     public class SearchVM : INotifyPropertyChanged
     {
@@ -28,8 +28,12 @@ namespace InvoiceManager.ViewModels
             ProcessCommand = new RelayCommand(o => processClick(o));
 
             SearchCommand = new RelayCommand(o => searchClick(o));
-            InvoiceTypes = new ObservableCollection<InvoiceType> { InvoiceType.All, InvoiceType.Cash, InvoiceType.Credit, InvoiceType.Check, InvoiceType.DebitCard, InvoiceType.GiftCard };
+            InvoiceTypes = new ObservableCollection<InvoiceType> { InvoiceType.All, InvoiceType.Cash, InvoiceType.Credit, InvoiceType.GiftCard };
 
+            From = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            To = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day );
+
+         
         }
 
 
@@ -56,13 +60,24 @@ namespace InvoiceManager.ViewModels
             }
         }
 
-        private DateTime from = new DateTime(2010, 1, 1);
+        private Summary totalSummary = new Summary();
+        public Summary TotalSummary
+        {
+            get => totalSummary;
+            set
+            {
+                totalSummary = value;
+                this.OnPropertyChanged("TotalSummary");
+            }
+        }
+
+        private DateTime from = DateTime.Today;
         public DateTime From
         {
             get => from;
             set {
                 from = value;
-                this.OnPropertyChanged("To");
+                this.OnPropertyChanged("From");
             }
         }
 
@@ -89,19 +104,8 @@ namespace InvoiceManager.ViewModels
             }
         }
 
-        private Summary totalSummary = new Summary();
-        public Summary TotalSummary
-        {
-            get => totalSummary;
-            set
-            {
-                totalSummary = value;
-                this.OnPropertyChanged("TotalSummary");
-            }
-        }
-
-        private Summary selectedSummary = new Summary();
-        public Summary SelectedSummary
+        private SubSummary selectedSummary = new SubSummary();
+        public SubSummary SelectedSummary
         {
             get => selectedSummary;
             set
@@ -111,7 +115,41 @@ namespace InvoiceManager.ViewModels
             }
         }
 
-        public ObservableCollection<InvoiceType> InvoiceTypes { get; set; } 
+        public ObservableCollection<InvoiceType> InvoiceTypes { get; set; }
+
+        private ObservableCollection<TypeTotal> typeTotals = new ObservableCollection<TypeTotal>();
+        public ObservableCollection<TypeTotal> TypeTotals
+        {
+            get => typeTotals;
+            set
+            {
+                typeTotals = value;
+                TotalSummary.TotalInvoicecs = TotalSummary.TotalInvoicecs;
+                TotalSummary.TotalGrand = typeTotals.Sum(item => item.GrandTotal);
+                var cash = typeTotals.FirstOrDefault(item => item.Type == "CA");
+                if (cash != null)
+                {
+                    TotalSummary.Cash = cash.GrandTotal;
+                }
+                var credit = typeTotals.FirstOrDefault(item => item.Type == "CC");
+                if (credit != null)
+                {
+                    TotalSummary.Credit = credit.GrandTotal;
+                }
+                var gift = typeTotals.FirstOrDefault(item => item.Type == "GC");
+                if (gift != null)
+                {
+                    TotalSummary.Gift = gift.GrandTotal;
+                }
+                var other = typeTotals.FirstOrDefault(item => item.Type == "DC" || item.Type == "ST");
+                if (other != null)
+                {
+                    TotalSummary.Other = other.GrandTotal;
+                }
+                this.OnPropertyChanged("TotalSummary");
+                OnPropertyChanged("TypeTotals");
+            }
+        }
 
 
 
@@ -131,19 +169,12 @@ namespace InvoiceManager.ViewModels
         {
             get
             {
-
-                TotalSummary.TotalInvoicecs = filteredInvoices.Count;
-                TotalSummary.TotalGrand = filteredInvoices.Sum(item => item.GrandTotal);
-                TotalSummary.Credit = filteredInvoices.Where(item => item.GetInvoiceType() == InvoiceType.Credit).Sum(item => item.GrandTotal);
-                TotalSummary.Cash = filteredInvoices.Where(item => item.GetInvoiceType() == InvoiceType.Cash).Sum(item => item.GrandTotal);
-                TotalSummary.Gift = filteredInvoices.Where(item => item.GetInvoiceType() == InvoiceType.GiftCard).Sum(item => item.GrandTotal);
-                TotalSummary.Other = filteredInvoices.Where(item => item.GetInvoiceType() == InvoiceType.All).Sum(item => item.GrandTotal);
-                OnPropertyChanged("TotalSummary");
                 return filteredInvoices;
             }
             set
             {
                 filteredInvoices = value;
+                TotalSummary.TotalInvoicecs = filteredInvoices.Count;
                 OnPropertyChanged("FilteredInvoices");
             }
         }
@@ -160,13 +191,25 @@ namespace InvoiceManager.ViewModels
 
                 selectedInvoices = value;
 
-                selectedSummary.TotalInvoicecs = filteredInvoices.Where(item => item.Checked).ToList().Count;
-                selectedSummary.TotalGrand = filteredInvoices.Where(item => item.Checked).Sum(item => item.GrandTotal);
-                selectedSummary.Credit = filteredInvoices.Where(item => item.Checked && item.GetInvoiceType() == InvoiceType.Credit).Sum(item => item.GrandTotal);
-                selectedSummary.Cash = filteredInvoices.Where(item => item.Checked && item.GetInvoiceType() == InvoiceType.Cash).Sum(item => item.GrandTotal);
-                selectedSummary.Gift = filteredInvoices.Where(item => item.Checked && item.GetInvoiceType() == InvoiceType.GiftCard).Sum(item => item.GrandTotal);
-                selectedSummary.Other = filteredInvoices.Where(item => item.Checked && item.GetInvoiceType() == InvoiceType.All).Sum(item => item.GrandTotal);
-                OnPropertyChanged("selectedSummary");
+                SelectedSummary.TotalInvoicecs = filteredInvoices.Where(item => item.Checked).ToList().Count;
+                SelectedSummary.Amount = filteredInvoices.Where(item => item.Checked).Sum(item => item.GrandTotal - item.ModeTotal)*3/100;
+                switch (SelectedType)
+                {
+                    case InvoiceType.Cash:
+                        SelectedSummary.Balance = (TotalSummary.TotalGrand - TotalSummary.Cash) * 3 / 100 - SelectedSummary.Amount;
+                        break;
+                    case InvoiceType.GiftCard:
+                        SelectedSummary.Balance = (TotalSummary.TotalGrand - TotalSummary.Gift) * 3 / 100 - SelectedSummary.Amount;
+                        break;
+                    case InvoiceType.Credit:
+                        SelectedSummary.Balance = (TotalSummary.TotalGrand - TotalSummary.Credit) * 3 / 100 - SelectedSummary.Amount;
+                        break;
+                    case InvoiceType.All:
+                        SelectedSummary.Balance = (TotalSummary.TotalGrand - TotalSummary.Other) * 3 / 100 - SelectedSummary.Amount;
+                        break;
+
+                }
+                OnPropertyChanged("SelectedSummary");
                 OnPropertyChanged("SelectedInvoices");
             }
         }
@@ -175,11 +218,23 @@ namespace InvoiceManager.ViewModels
         public ICommand SearchCommand { get; set; }
         private async void searchClick(object sender)
         {
+            if (To < From)
+            {
+                MessageBox.Show("Invalid Date Range");
+                return;
+            }
+            IsProcessing = Visibility.Visible;
             await Task.Run(async () =>
             {
-                filteredInvoices = new ObservableCollection<Invoice>(await Service.Instance.Search(From, To, SelectedType));
+                FilteredInvoices = new ObservableCollection<Invoice>(await Service.Instance.Search(From, To, SelectedType));
                 OnPropertyChanged("FilteredInvoices");
+                var _typeTotals = await Service.Instance.GetTotal(From, To);
+                TypeTotals = new ObservableCollection<TypeTotal>(_typeTotals);
+
             });
+
+            IsProcessing = Visibility.Hidden;
+
         }
 
         public ICommand CloseCommand { get; set; }
@@ -191,9 +246,12 @@ namespace InvoiceManager.ViewModels
         public ICommand ResetCommand { get; set; }
         private void resetClick(object sender)
         {
-            From = new DateTime();
-            To = new DateTime();
+            From = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            To = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             SelectedType = InvoiceType.All;
+            FilteredInvoices = new ObservableCollection<Invoice>();
+
+            SelectedInvoices = new ObservableCollection<Invoice>();
         }
 
         public ICommand ProcessCommand { get; set; }
@@ -210,7 +268,7 @@ namespace InvoiceManager.ViewModels
 
                     IsProcessing = Visibility.Hidden;
                     Mouse.OverrideCursor = Cursors.Arrow;
-                    MessageBox.Show("All Invoices Processed Succesfully");
+                    MessageBox.Show("All Labels Processed Succesfully");
                     filteredInvoices = new ObservableCollection<Invoice>(await Service.Instance.Search(From, To, SelectedType));
                     OnPropertyChanged("FilteredInvoices");
                 });

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace InvoiceManager.Converters
+namespace LabelManager.Converters
 {
     public class DateConverter : IValueConverter
     {
@@ -14,7 +14,7 @@ namespace InvoiceManager.Converters
         {
             if (value is DateTime val)
             {
-                string date = $"{val.Day}/{val.Month}/{val.Year}";
+                string date = $"{val.Month}/{val.Day}/{val.Year}";
                 return date;
             }
             return value;
@@ -30,7 +30,7 @@ namespace InvoiceManager.Converters
                 {
                     try
                     {
-                        var time = new DateTime(int.Parse(numbers[2]) , int.Parse(numbers[1]), int.Parse(numbers[0]), 0, 0, 0);
+                        var time = new DateTime(int.Parse(numbers[2]) , int.Parse(numbers[0]), int.Parse(numbers[1]), 0, 0, 0);
                         return time;
 
                     }catch

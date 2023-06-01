@@ -13,10 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using InvoiceManager.Models;
-using InvoiceManager.ViewModels;
+using LabelManager.Models;
+using LabelManager.ViewModels;
 
-namespace InvoiceManager.Views
+namespace LabelManager.Views
 {
     /// <summary>
     /// Interaction logic for ConnectPage.xaml

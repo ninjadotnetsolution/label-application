@@ -1,6 +1,6 @@
-﻿using InvoiceManager.Common;
-using InvoiceManager.Models;
-using InvoiceManager.Views;
+﻿using LabelManager.Common;
+using LabelManager.Models;
+using LabelManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace InvoiceManager.ViewModels
+namespace LabelManager.ViewModels
 {
    
     public class InvoiceVM : INotifyPropertyChanged

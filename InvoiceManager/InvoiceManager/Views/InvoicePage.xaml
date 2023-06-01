@@ -1,0 +1,194 @@
+﻿<Page x:Class="InvoiceManager.Views.InvoicePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:InvoiceManager.Views"
+      xmlns:viewModel="clr-namespace:InvoiceManager.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="1300"
+      Title="InvoicePage">
+    
+    <Page.Resources>
+        <ControlTemplate TargetType="{x:Type Button}" x:Key="SaveButton">
+            <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Resources/printer.png"/>
+        </ControlTemplate>
+    </Page.Resources>
+
+    <DockPanel HorizontalAlignment="Center">
+
+        <Border  Background="#3f4f4f4f" Width="1300" Padding="30" CornerRadius="30 0 30 0" x:Name="Invoice">
+
+            <Grid HorizontalAlignment="Center" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="600"/>
+                        <ColumnDefinition Width="600"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="sdfa" FontSize="20"/>
+                        <TextBlock Text="sdfa" FontSize="20"/>
+                        <TextBlock Text="sdfa" FontSize="20"/>
+                        <TextBlock Text="-------------*************--------------" FontSize="20"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="Invoice No: 3434343" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                </Grid>
+
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="ADJFSJFSDJFSDKFJKSF" FontSize="30" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="OWNER   :" FontSize="20"/>
+                        <TextBlock Text="jdfkjs" FontSize="20"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="ADDRESS   :" FontSize="20"/>
+                        <TextBlock Text="0404040-asdf" FontSize="20"/>
+                    </StackPanel>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="400"/>
+                                <ColumnDefinition Width="400"/>
+                                <ColumnDefinition Width="400"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" BorderThickness="2" BorderBrush="Black">
+                                <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Grid.Column="1" BorderThickness="0 2 0 2" BorderBrush="Black">
+                                <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+                                <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="800"/>
+                                <ColumnDefinition Width="400"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="1" BorderThickness="2 0 2 2" BorderBrush="Black">
+                                <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="ADDRESS   :" FontSize="20"/>
+                        <TextBlock Text="0404040-asdf" FontSize="20" Width="600"/>
+                        <TextBlock Text="0404040-asdf" FontSize="20"/>
+                        <TextBlock Text="0404040-asdf" FontSize="20"/>
+                    </StackPanel>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="550"/>
+                            <ColumnDefinition Width="550"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="180"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" BorderThickness="2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0 2 0 2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="180"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" BorderThickness="2 0 2 2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0 0 0 2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="2 0 2 2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+
+
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="180"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" BorderThickness="2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0 2 0 2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="180"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" BorderThickness="2 0 2 2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0 0 0 2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="2 0 2 2" BorderBrush="Black">
+                                    <TextBlock Text="djkjdfk" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+
+
+                        </Grid>
+
+                    </Grid>
+                </StackPanel>
+
+            </Grid>
+
+        </Border>
+
+        <Button Template="{StaticResource SaveButton }" Command="{Binding PrintCommand}" Width="100" Height="100" Margin="-500 -800 0 0" ></Button>
+
+    </DockPanel>
+</Page>

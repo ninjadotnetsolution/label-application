@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using InvoiceManager.Models;
+using LabelManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace InvoiceManager.Common
+namespace LabelManager.Common
 {
    
 
@@ -35,7 +35,6 @@ namespace InvoiceManager.Common
                 try
                 {
                     await connection.OpenAsync();
-
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "connects.txt");
                     File.OpenWrite(path).Close();
 
@@ -88,7 +87,6 @@ namespace InvoiceManager.Common
 
         public async Task<List<Invoice>> Search(DateTime from, DateTime to, InvoiceType selectedType)
         {
-            
             List<Invoice> result = new List<Invoice>();
 
             string type = "";
@@ -119,17 +117,51 @@ namespace InvoiceManager.Common
                 string queryString = "";
                 if (type == null)
                 {
-                    queryString = $"SELECT MAX(IT.Store_ID) as Id, IT.Invoice_Number as InvoiceNumber, IT.DateTime as DateTime, IT.Payment_Method as PaymentMethod, II1.LineCount as LineCount, CAST(ROUND((II.PricePer+II.Tax1Per+II.Tax2Per),2) as numeric(36,2)) as ModeTotal, IT.Grand_Total as TotalGrand FROM [dbo].[Invoice_Totals] IT INNER JOIN [dbo].[Invoice_Itemized] II ON IT.Invoice_Number = II.Invoice_Number INNER JOIN (Select IIS.Invoice_Number, Count(IIS.LineNum) as LineCount FROM [dbo].[Invoice_Itemized] IIS  GROUP BY IIS.Invoice_Number) II1 ON IT.Invoice_Number = II1.Invoice_Number WHERE IT.DateTime > '{from}' AND IT.DateTime < '{to}'";
+                    queryString = $"SELECT IT.Invoice_Number as Number, IT.DateTime as DateTime , IIF(IT.CustNum = '101', 'N', 'Y') as Member, \r\nIT.Payment_Method as Type, II1.LineCount as LineCount, \r\nCAST(ROUND((II.PricePer+II.Tax1Per+II.Tax2Per),2) as numeric(36,2)) as ModeTotal, \r\nIT.Grand_Total as GrandTotal FROM [dbo].[Invoice_Totals] IT \r\nINNER JOIN [dbo].[Invoice_Itemized] II ON IT.Invoice_Number = II.Invoice_Number \r\nINNER JOIN (Select IIS.Invoice_Number, Count(IIS.LineNum) as LineCount \r\nFROM [dbo].[Invoice_Itemized] IIS  GROUP BY IIS.Invoice_Number) II1 ON IT.Invoice_Number = II1.Invoice_Number \r\nWHERE II.LineNum = 1 AND IT.Grand_Total > 0 AND CONVERT(VARCHAR(8), IT.DateTime, 112) >= '{Helpers.DateToStr12(from)}' AND CONVERT(VARCHAR(8), IT.DateTime, 112) <= '{Helpers.DateToStr12(to)}' ORDER BY IT.Grand_Total DESC";
                 }
                 else
                 {
-                    queryString = $"SELECT MAX(IT.Store_ID) as Id, IT.Invoice_Number as InvoiceNumber, IT.DateTime as DateTime, IT.Payment_Method as PaymentMethod, II1.LineCount as LineCount, CAST(ROUND((II.PricePer+II.Tax1Per+II.Tax2Per),2) as numeric(36,2)) as ModeTotal, IT.Grand_Total as TotalGrand FROM [dbo].[Invoice_Totals] IT INNER JOIN [dbo].[Invoice_Itemized] II ON IT.Invoice_Number = II.Invoice_Number INNER JOIN (Select IIS.Invoice_Number, Count(IIS.LineNum) as LineCount FROM [dbo].[Invoice_Itemized] IIS  GROUP BY IIS.Invoice_Number) II1 ON IT.Invoice_Number = II1.Invoice_Number WHERE IT.DateTime > '{from}' AND IT.DateTime < '{to}' AND IT.Payment_Method = '{type}'";
+                    queryString = $"SELECT IT.Invoice_Number as Number, IT.DateTime as DateTime , IIF(IT.CustNum = '101', 'N', 'Y') as Member, \r\nIT.Payment_Method as Type, II1.LineCount as LineCount, \r\nCAST(ROUND((II.PricePer+II.Tax1Per+II.Tax2Per),2) as numeric(36,2)) as ModeTotal, \r\nIT.Grand_Total as GrandTotal FROM [dbo].[Invoice_Totals] IT \r\nINNER JOIN [dbo].[Invoice_Itemized] II ON IT.Invoice_Number = II.Invoice_Number \r\nINNER JOIN (Select IIS.Invoice_Number, Count(IIS.LineNum) as LineCount \r\nFROM [dbo].[Invoice_Itemized] IIS  GROUP BY IIS.Invoice_Number) II1 ON IT.Invoice_Number = II1.Invoice_Number \r\nWHERE II.LineNum = 1 AND IT.Grand_Total > 0 AND CONVERT(VARCHAR(8), IT.DateTime, 112) >= '{Helpers.DateToStr12(from)}' AND CONVERT(VARCHAR(8), IT.DateTime, 112) <= '{Helpers.DateToStr12(to)}' \r\nAND IT.Payment_Method = '{type}' ORDER BY IT.Grand_Total DESC";
                 }
 
-                await connection.OpenAsync();
-                var res = await connection.QueryAsync<Invoice>(queryString);
-                result = res.ToList();
-                connection.Close();
+                try
+                {
+                    await connection.OpenAsync();
+                    var res = await connection.QueryAsync<Invoice>(queryString, null, null, 60, null);
+                    result = res.ToList();
+                    if(result.Count == 0)
+                    {
+                        MessageBox.Show("No Invoice Records are Available");
+                    }
+                    connection.Close();
+
+                }catch
+                {
+                    MessageBox.Show("Query Timed Out");
+
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<List<TypeTotal>> GetTotal(DateTime from, DateTime to)
+        {
+            List<TypeTotal> result = new List<TypeTotal>();
+
+            {
+                string queryString = $"Select IT.Payment_Method as Type, COUNT(IT.Invoice_Number) as InvoiceCount, SUM(IT.Grand_Total) as GrandTotal\r\n FROM [dbo].[Invoice_Totals] IT\r\n WHERE \r\n CONVERT(VARCHAR(8), IT.DateTime, 112) >= '{Helpers.DateToStr12(from)}' AND CONVERT(VARCHAR(8), IT.DateTime, 112) <= '{Helpers.DateToStr12(to)}' \r\n GROUP BY IT.Payment_Method";
+                try
+                {
+                    await connection.OpenAsync();
+                    var res = await connection.QueryAsync<TypeTotal>(queryString, null, null, 60, null);
+                    result = res.ToList();
+                    connection.Close();
+
+                }
+                catch
+                {
+                }
             }
 
             return result;

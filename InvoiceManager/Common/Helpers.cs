@@ -1,4 +1,4 @@
-﻿using InvoiceManager.Models;
+﻿using LabelManager.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace InvoiceManager.Common
+namespace LabelManager.Common
 {
     class Helpers
     {
@@ -96,6 +96,13 @@ namespace InvoiceManager.Common
             }
 
             return plaintext;
+        }
+
+        public static string DateToStr12(DateTime time)
+        {
+            string _month = time.Month > 9 ? time.Month.ToString() : $"0{time.Month }";
+            string _day = time.Day > 9 ? time.Day.ToString() : $"0{time.Day}";
+            return $"{time.Year}{_month }{_day}";
         }
     }
 

@@ -5,7 +5,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InvoiceManager.Models
+namespace LabelManager.Models
 {
     public class InvoiceDbContext 
     {

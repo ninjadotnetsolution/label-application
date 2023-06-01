@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InvoiceManager.Models
+namespace LabelManager.Models
 {
     public class Invoice
     {
@@ -12,6 +12,7 @@ namespace InvoiceManager.Models
         public int Number { get; set; }
         public DateTime DateTime { get; set; }
         public String Type { get; set; }
+        public String Member { get; set; }
         public int LineCount { get; set; }
         public float ModeTotal { get; set; }
         public float GrandTotal { get; set; }
@@ -25,10 +26,6 @@ namespace InvoiceManager.Models
                     return InvoiceType.Cash;
                 case "GC":
                     return InvoiceType.GiftCard;
-                case "CH":
-                    return InvoiceType.Check;
-                case "DC":
-                    return InvoiceType.DebitCard;
                 case "CC":
                     return InvoiceType.Credit;
                 default:
@@ -36,8 +33,6 @@ namespace InvoiceManager.Models
             }
         }
 
-        public Invoice()
-        { }
 
     }
 

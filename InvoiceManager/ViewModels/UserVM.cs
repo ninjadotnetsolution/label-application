@@ -1,6 +1,6 @@
-﻿using InvoiceManager.Common;
-using InvoiceManager.Models;
-using InvoiceManager.Views;
+﻿using LabelManager.Common;
+using LabelManager.Models;
+using LabelManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace InvoiceManager.ViewModels
+namespace LabelManager.ViewModels
 {
     internal class UserVM : INotifyPropertyChanged
     {
@@ -35,7 +35,7 @@ namespace InvoiceManager.ViewModels
                 List<string> _connects = File.ReadAllLines(path).ToList();
                 for(int i = 2; i < _connects.Count; i++)
                 {
-                    if (_connects[i].Length > 0)
+                    if (_connects[i].Length > 1)
                     {
                         connects.Add(new Connect(i, _connects[i]));
                     }
@@ -241,7 +241,7 @@ namespace InvoiceManager.ViewModels
             } else
             {
                 var asmbly = Assembly.GetExecutingAssembly();
-                var filePath = "InvoiceManager.Resources.credential.txt";
+                var filePath = "LabelManager.Resources.credential.txt";
                 using (Stream s = asmbly.GetManifestResourceStream(filePath))
                 using (StreamReader sr = new StreamReader(s))
                 {
@@ -285,7 +285,7 @@ namespace InvoiceManager.ViewModels
             else
             {
                 var asmbly = Assembly.GetExecutingAssembly();
-                var filePath = "InvoiceManager.Resources.credential.txt";
+                var filePath = "LabelManager.Resources.credential.txt";
                 using (Stream s = asmbly.GetManifestResourceStream(filePath))
                 using (StreamReader sr = new StreamReader(s))
                 {
